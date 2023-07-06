@@ -5,16 +5,22 @@ import {TabNavigator, TabBarBottom, createBottomTabNavigator
 from 'react-navigation';
 
 import Dashboard  from './src/Main'
+import Login  from './src/Auth/Login'
 import Main  from './src/Main/index2'
 import ChoiceInventory  from './src/Main/index3'
 import PartInventory  from './src/Main/index4'
 import PackingInventory  from './src/Main/index5'
-
+import PackingStore from './src/Stores/index'
 
 
 
 var AppContainer = createStackNavigator({ 
-    
+  PackingStore:{
+    screen:PackingStore
+  },
+  Login:{
+    screen:Login
+  },
     Dashboard:{
     screen:Dashboard
   },
@@ -35,7 +41,7 @@ var AppContainer = createStackNavigator({
  {
     headerMode: 'none',
     // initialRouteName: 'ChangePincode'
-    initialRouteName: 'Dashboard'
+    initialRouteName: 'Login'
   }
  
  )

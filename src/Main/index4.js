@@ -65,7 +65,7 @@ const [showNotifStyle, setshowNotifStyle] = useState(false)
   let GetUnits=()=>{
       MSSQL.connect(config).then(result1 => {console.log('result1',result1)}).
       then(exec=>{
-        MSSQL.executeQuery('GetPart 1 ').then(result =>{
+        MSSQL.executeQuery('GetPart  ' + UnitData.UserId).then(result =>{
           console.log('result : ',result)
             setUnits(result)
            
@@ -112,6 +112,17 @@ let GetProductStyle=(SelectedProductId)=>{
   
 
   
+   let refreshScreen=()=>{
+    GetUnits() ;
+    setSelectedUnits('')
+    setSelectedUnitsId('')
+    setSelectedStylesId('')
+    setSelectedStyles('')
+    setSelectedProducts('')
+    setSelectedProductsId('')
+
+   }
+
   
   useEffect(()=>{
    
@@ -166,7 +177,7 @@ let GetProductStyle=(SelectedProductId)=>{
         
         <View style={{flexDirection: 'row', backgroundColor: ColorPalet._Header, elevation: 6, height: hp('7%'), width: wp('100%')}}>
             <View style={{width: wp('15%'), alignItems: 'center', justifyContent: 'center'}}>
-            <TouchableOpacity onPress={()=>{props.navigation.push('Dashboard')}}>
+            <TouchableOpacity onPress={()=>{props.navigation.goBack()}}>
                 <Icon name = 'arrow-back' color='white' type="materialicon" size={30}/>
             </TouchableOpacity>
             </View>
@@ -174,7 +185,7 @@ let GetProductStyle=(SelectedProductId)=>{
             <Text style={styles.HeaderTextStyle2}>انتخاب محصول</Text>
             </View>
             <View style={{width: wp('15%'), alignItems: 'center', justifyContent: 'center'}}>
-            <TouchableOpacity onPress={()=>{}}>   
+            <TouchableOpacity onPress={()=>{refreshScreen()}}>   
                 <Icon name = 'refresh' color='white' type="materialicon" size={30}/>
             </TouchableOpacity> 
             </View>
@@ -195,7 +206,7 @@ let GetProductStyle=(SelectedProductId)=>{
             
             }}
             >
-                <TextInput style={{width: '85%', height: hp('4.5%'), fontSize: wp('4%'), paddingVertical: 0,
+                <TextInput style={{width: '85%', height: hp('7%'), fontSize: wp('4%'), paddingVertical: 0,
                  backgroundColor: '#d9d9d9', borderRadius: 10, marginHorizontal: '7.5%', textAlign: 'center'}} value={SelectedUnits} 
                   editable={false}
                   textAlign='center'
@@ -234,7 +245,7 @@ let GetProductStyle=(SelectedProductId)=>{
             
             }}
             >
-                <TextInput style={{width: '85%', height: hp('4.5%'), fontSize: wp('4%'), paddingVertical: 0,
+                <TextInput style={{width: '85%', height: hp('7%'), fontSize: wp('4%'), paddingVertical: 0,
                  backgroundColor: '#d9d9d9', borderRadius: 10, marginHorizontal: '7.5%', textAlign: 'center'}} value={SelectedProducts} 
                   editable={false}
                   textAlign='center'
@@ -260,7 +271,7 @@ let GetProductStyle=(SelectedProductId)=>{
             
             }}
             >
-                <TextInput style={{width: '85%', height: hp('4.5%'), fontSize: wp('4%'), paddingVertical: 0,
+                <TextInput style={{width: '85%', height: hp('7%'), fontSize: wp('4%'), paddingVertical: 0,
                  backgroundColor: '#d9d9d9', borderRadius: 10, marginHorizontal: '7.5%', textAlign: 'center'}} value={SelectedStyles} 
                   editable={false}
                   textAlign='center'
@@ -283,7 +294,7 @@ let GetProductStyle=(SelectedProductId)=>{
             
       }}
         >
-                <TextInput style={{width: '85%', height: hp('4.5%'), fontSize: wp('4%'), paddingVertical: 0,
+                <TextInput style={{width: '85%', height: hp('7%'), fontSize: wp('4%'), paddingVertical: 0,
                  backgroundColor: ColorPalet._blue2, borderRadius: 10, marginHorizontal: '7.5%', textAlign: 'center'}} value={'ثبت'} 
                  
                   editable={false}

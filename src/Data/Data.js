@@ -1,6 +1,6 @@
 export const Font = {FontSansB: 'IRAN Sans Bold', FontSansR: 'IRAN Sans Regular'}
 export const Size = {TextSize: '2.75%', UpTitleSize: '2%'}
-export const UnitData = {UnitId:'',ProductId:'',ProductStyles:'',UnitName:'',ProductName:''}
+export const UnitData = {UnitId:'',ProductId:'',ProductStyles:'',UnitName:'',ProductName:'',StationId:0,UserId:0}
 export const ColorPalet = {MainColor: 'white', AlterColor: 'red', _blue: '#2196F3', 
                            _blue2: '#17acfc', _smokey2: '#f2f2f2', _smokey: '#c7c7c7', _smokey4: '#525252', 
                            _smokey3: '#d4d4d4', _Header: '#2a2f32', _HeaderTitle: '#a4a6a8',

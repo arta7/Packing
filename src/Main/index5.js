@@ -6,7 +6,7 @@ import {
   View,
   Text,
   
-  StatusBar, Image, ImageBackground, TextInput, TouchableOpacity, Alert,FlatList, ActivityIndicator, PermissionsAndroid
+  StatusBar, Image, ImageBackground, TextInput, TouchableOpacity, Alert,FlatList, BackHandler, PermissionsAndroid
 } from 'react-native';
 
 import { Icon, colors, Header } from 'react-native-elements';
@@ -75,6 +75,9 @@ const PackingInventory = (props) => {
           const [PackHeaderReturnId, setPackHeaderReturnId] = useState('')
           const [HeaderReturnId, setHeaderReturnId] = useState('')
 
+          const [showFirstItemKeyboard,setshowFirstItemKeyboard] = useState(false)
+          const [showSecondItemKeyboard,setshowSecondItemKeyboard] = useState(false)
+          const [showThirdItemKeyboard,setshowThirdItemKeyboard] = useState(false)
 
 
 
@@ -97,7 +100,7 @@ const PackingInventory = (props) => {
             setProductStyles(result)
             if(result.length>0)
             setSelectedProducts(result[0])
-            console.log('rs 0 ',result)
+            //console.log('rs 0 ',result)
             
           })
         })
@@ -170,18 +173,37 @@ const PackingInventory = (props) => {
 
                             if(SelectedProducts?.LevelPriority.toString() == '1')
                             {
+
                               if(result.length>0)
                               {
+                                if(result.length < SelectedProducts?.PackQty)
+                                {
                                 setLastBarcode(result[result.length-1].Barcode)
-                                ref_input2.current.focus()
+                              
                                 setFirstItemActive(false)
+                                setSecondItemText('')
                                 setSecondItemActive(true)
+                                ref_input2.current.focus()
+                                }
+                                else
+                                {
+                                  setLastBarcode(result[result.length-1].Barcode)
+                                  
+                                  setSecondItemActive(false)
+                                  setFirstItemActive(false)
+                                  setThirdItemActive(true)
+                                  setThirdItemText('')
+                                  ref_input3.current.focus()
+                                }
+
                               } 
                               else
                               {
-                                ref_input2.current.focus()
+                                
                                 setFirstItemActive(false)
+                                setSecondItemText('')
                                 setSecondItemActive(true)
+                                ref_input2.current.focus()
                               }   
                             }
                             else   if(SelectedProducts?.LevelPriority.toString() == '2')
@@ -192,25 +214,33 @@ const PackingInventory = (props) => {
                                 if(result.length < SelectedProducts?.PackQty)
                                 {
                                   setLastBarcode(result[result.length-1].Barcode)
-                                  ref_input2.current.focus()
+                                 
                                   setFirstItemActive(false)
+                                  setSecondItemText('')
                                   setSecondItemActive(true)
+                                   ref_input2.current.focus()
+                                
                                 }
                                 else
                                 {
                                   setLastBarcode(result[result.length-1].Barcode)
-                                  ref_input3.current.focus()
+                                  
                                   setSecondItemActive(false)
                                   setFirstItemActive(false)
                                   setThirdItemActive(true)
+                                  setThirdItemText('')
+                                  ref_input3.current.focus()
                                 }
                                
                               } 
                               else
                               {
-                                ref_input2.current.focus()
+                                
                                 setFirstItemActive(false)
+                                setSecondItemText('')
                                 setSecondItemActive(true)
+                                 ref_input2.current.focus()
+                              
                               } 
 
 
@@ -221,25 +251,43 @@ const PackingInventory = (props) => {
                             {
                               if(result.length>0)
                               {
+                                if(result.length < SelectedProducts?.PackQty)
+                                {
                                 setLastBarcode(result[result.length-1].Barcode)
-                                ref_input2.current.focus()
+                               
                                 setFirstItemActive(false)
+                                setSecondItemText('')
                                 setSecondItemActive(true)
+                                 ref_input2.current.focus()
+                                }
+                                else
+                                {
+                                  setLastBarcode(result[result.length-1].Barcode)
+                                  
+                                  setSecondItemActive(false)
+                                  setFirstItemActive(false)
+                                  setThirdItemActive(true)
+                                  setThirdItemText('')
+                                  ref_input3.current.focus()
+                                }
                               } 
                               else
                               {
-                                ref_input2.current.focus()
+                                
                                 setFirstItemActive(false)
+                                setSecondItemText('')
                                 setSecondItemActive(true)
+                                ref_input2.current.focus()
                               }   
                             }
                               
                   })
                 })
                 .catch(error => {Alert.alert('لطفا از اتصال به شبکه مطمئن شوید.')
+                setFirstItemActive(true)
                 setFirstItemText('')
                 ref_input1.current.focus()
-              });
+              })
                       //GetChildBarcode
                         }
 
@@ -249,6 +297,7 @@ const PackingInventory = (props) => {
                 })
                 .catch(error => {
                   Alert.alert('لطفا از اتصال به شبکه مطمئن شوید.')
+                  setFirstItemActive(true)
                   setFirstItemText('')
                   ref_input1.current.focus()
                 });
@@ -291,9 +340,7 @@ const PackingInventory = (props) => {
                 let EndIndex = ((dtProduct[0].CodeSSPP.toString() + dtProduct[0].Serial.toString()).length);
                 var  Code = (dtProduct[0].CodeSSPP.toString() + dtProduct[0].Serial.toString())
 
-                // DeviceInfo.getDeviceName().then((host) => {
-                //   console.log('Host name',host)
-                // });
+                
 
                 if(Code.toUpperCase() == SecondItemText.substring(Startindex,EndIndex).toUpperCase() )
                 {
@@ -302,7 +349,6 @@ const PackingInventory = (props) => {
                   then(exec=>{
                     MSSQL.executeUpdate(
                       'InsertBarcode @Barcode = ' + SecondItemText + ',@State =' +6 +',@Registered = ' + 1 +',@StationId = '+StationId
-                    
                     ).then(() =>{
 
                         //InsertPackengTemp
@@ -327,6 +373,7 @@ const PackingInventory = (props) => {
                             else
                             {
                                
+                               setSecondItemActive(true)
                                 ref_input2.current.focus()
                              
                             }
@@ -352,6 +399,7 @@ const PackingInventory = (props) => {
                 else
                 {
                   Alert.alert('بارکد وارد شده برای بسته مورد نظر نمی باشد')
+                  setSecondItemActive(true)
                   setSecondItemText('')
                   ref_input2.current.focus()
                 }
@@ -365,13 +413,14 @@ const PackingInventory = (props) => {
               }
 
 
-
+              setSecondItemActive(true)
               setSecondItemText('')
               ref_input2.current.focus()
             } 
             else
             {
               Alert.alert('بارکد مورد نظر تکراری می باشد')
+              setSecondItemActive(true)
               setSecondItemText('')
               ref_input2.current.focus()
 
@@ -399,7 +448,7 @@ const PackingInventory = (props) => {
                   then(exec=>{
                     MSSQL.executeUpdate(
 
-                      'InsertLog @UserId = '+1 +',@PackHeaderId = '+HeaderReturnId +',@Status ='+6+',@Station = '+StationId             
+                      'InsertLog @UserId = '+ UnitData.UserId +',@PackHeaderId = '+HeaderReturnId +',@Status ='+6+',@Station = '+StationId             
                     ).then(() =>{
                       setLastBarcode(SecondItemText)
                       console.log('set InsertLog Complete')
@@ -551,10 +600,6 @@ const PackingInventory = (props) => {
 
 
 
-
-
-
-
        let GetPackHeaderBarcode=async(barcode)=>{
         MSSQL.connect(config).then(result1 => {console.log('result1',result1)}).
         then(exec=>{
@@ -562,11 +607,12 @@ const PackingInventory = (props) => {
              ' DECLARE @ReturnId INT; EXEC GetPackHeaderBarcode @Barcode = ' + barcode + ', @ReturnId =@ReturnId  OUTPUT;SELECT	@ReturnId as ReturnId'
             ).then(result =>{
             console.log('result PackHeader : ',result) 
-            setLastBarcode('')
+            setLastBarcode('_')
             setPackHeaderReturnId(result[0].ReturnId) 
               if(result[0].ReturnId.toString() == '6')
               {
                
+                 
                   CheckControlId1FirstBarcode()
                 
               
@@ -575,11 +621,12 @@ const PackingInventory = (props) => {
               {
 
                   //InsertPackHeader
-
+              
 
                   if(FirstItemText.substring(0,1).toUpperCase() == SelectedProducts?.Symble.toUpperCase())
                   {
-        
+
+                 
                       if(FirstItemText.substring
                         (4+dtProduct[0].SSPP.length,dtProduct[0].SSPP.length+4+1).toUpperCase() 
                       == dtProduct[0].YearSymble.toUpperCase() 
@@ -588,9 +635,15 @@ const PackingInventory = (props) => {
                        == dtProduct[0].SSPP.toUpperCase()
                       )
                       {
-
-                        console.log('Datet time',new Date('2017-08-15'),'(SelectedProducts?.PtId) : ',(SelectedProducts?.PtId))
+                        Alert.alert('test')
+                        // console.log('Datet time',new Date('2017-08-15'),'(SelectedProducts?.PtId) : ',(SelectedProducts?.PtId))
                         InsertPackHeader(FirstItemText,(SelectedProducts?.PtId),6,StationId)
+                     
+                         setFirstItemActive(false)
+                         setSecondItemActive(true)
+                         setSecondItemText('')
+                         setCurrentStep(0)
+                         ref_input2.current.focus()
 
 
                       }
@@ -627,21 +680,83 @@ const PackingInventory = (props) => {
 
 
   useEffect(()=>{
+   
     console.log('UnitData.ProductId',UnitData.ProductId)
     
     ref_input1.current.focus()
     GetPackingInformation(UnitData.ProductStyles)
     setTimeout(() => {
       GetProducts(UnitData.ProductId)
+      console.log('UnitData.ProductId',UnitData.ProductId)
     }, 500);
+
+    setTimeout(() => {
+      DeviceInfo.getMacAddress().then((host) => {
+
+        MSSQL.connect(config).then(result1 => {console.log('result1',result1)}).
+        then(exec=>{
+          MSSQL.executeQuery(
+             'SelectStation '
+            ).then(result =>{
+              if(result.length>0)
+              {
+                 if(result.filter((a)=>a.HostName == host).length>0)
+                 {
+                  // Alert.alert (result.filter((a)=>a.HostName == host)[0].Id.toString())
+                  UnitData.StationId = result.filter((a)=>a.HostName == host)[0].Id;
+                  StationId = result.filter((a)=>a.HostName == host)[0].Id
+                 }
+                 else
+                 {
+                  props.navigation.goBack()
+                  Alert.alert('این سیستم تعریف نشده است.لطفا با ادمین تماس بگیرید.')
+                 
+                 }
+              }
+              else
+              {
+                props.navigation.goBack()
+                  Alert.alert('این سیستم تعریف نشده است.لطفا با ادمین تماس بگیرید.')
+                  
+              }
+            })
+          })
+            .catch(error => {Alert.alert('لطفا از اتصال به شبکه مطمئن شوید.')});
+  
+        
+        
+      });
+    }, 1000);
+
+    const backHandler =  BackHandler.addEventListener('hardwareBackPress', () => {
+     return true
+    }
+      )
+      return () => backHandler.remove()
+
+    
     // GetProducts(UnitData.ProductId)
     //GetPackHeaderBarcode("P120042N050002")
   },[])
 
 
 
+   let handleHardWare=async()=>{
+       
+      Alert.alert('خروج', 'آیا از بازگشت به صفحه قبل مطمئن هستید؟', [
+        {
+          text: 'خیر',
+          onPress: () => {return true}
+          // style: 'cancel',
+        },
+        {text: 'بله', onPress: () => {return false}},
+      ])
+    }
+
+
     return (
         <View style={styles.Container}>
+          <ScrollView>
     
 
        
@@ -663,7 +778,18 @@ const PackingInventory = (props) => {
         
         <View style={{flexDirection: 'row', backgroundColor: ColorPalet._Header, elevation: 6, height: hp('7%'), width: wp('100%')}}>
             <View style={{width: wp('15%'), alignItems: 'center', justifyContent: 'center'}}>
-            <TouchableOpacity onPress={()=>{}}>
+            <TouchableOpacity onPress={()=>{
+              Alert.alert('خروج', 'آیا از بازگشت به صفحه قبل مطمئن هستید؟', [
+                {
+                  text: 'خیر',
+                  onPress: () => console.log('Cancel Pressed')
+                  // style: 'cancel',
+                },
+                {text: 'بله', onPress: () => props.navigation.goBack()},
+              ])
+                
+
+            }}>
                 <Icon name = 'arrow-back' color='white' type="materialicon" size={30}/>
             </TouchableOpacity>
             </View>
@@ -704,6 +830,14 @@ const PackingInventory = (props) => {
             onPress={()=>{
 
               setSelectedProducts(item)
+              setFirstItemActive(true)
+              setSecondItemActive(false)
+              setThirdItemActive(false)
+              setThirdItemText('')
+              setFirstItemText('')
+              setSecondItemText('')
+              setLastBarcode('_')
+              ref_input1.current.focus()
              }}
             >
                 <TextInput style={{width: '85%', height: hp('4.5%'), fontSize: wp('4%'), paddingVertical: 0,
@@ -751,9 +885,10 @@ const PackingInventory = (props) => {
                     <Text style={{paddingRight: wp('7.5%'), fontSize: wp('4%'), fontFamily: Font.FontSansB}}>بارکد بسته بندی</Text>
                 </View>
           
-                <TextInput style={{width: '85%', height: hp('7%'), fontSize: wp('4%'), paddingVertical: 0,
+                <TextInput style={{width: '85%', height: hp('9%'), fontSize: wp('4%'), paddingVertical: 0,
                  backgroundColor: '#d9d9d9', borderRadius: 10, marginHorizontal: '7.5%', textAlign: 'center'}} value={FirstItemText} 
                   editable={FirstItemActive}
+                  showSoftInputOnFocus={showFirstItemKeyboard}
                   textAlign='center'
                   color='black'
                   ref={ref_input1}
@@ -779,9 +914,10 @@ const PackingInventory = (props) => {
                     }
                     {
           
-                <TextInput style={{width: '85%', height: hp('7%'), fontSize: wp('4%'), paddingVertical: 0,
+                <TextInput style={{width: '85%', height: hp('9%'), fontSize: wp('4%'), paddingVertical: 0,
                  backgroundColor: '#d9d9d9', borderRadius: 10, marginHorizontal: '7.5%', textAlign: 'center'}} value={SecondItemText} 
                   editable={SecondItemActive}
+                  showSoftInputOnFocus={showSecondItemKeyboard}
                   textAlign='center'
                   color='black'
                   ref={ref_input2}
@@ -807,9 +943,10 @@ const PackingInventory = (props) => {
                     <Text style={{paddingRight: wp('7.5%'), fontSize: wp('4%'), fontFamily: Font.FontSansB}}>بارکد بسته بندی</Text>
                 </View>
           
-                <TextInput style={{width: '85%', height: hp('7%'), fontSize: wp('4%'), paddingVertical: 0,
+                <TextInput style={{width: '85%', height: hp('9%'), fontSize: wp('4%'), paddingVertical: 0,
                  backgroundColor: '#d9d9d9', borderRadius: 10, marginHorizontal: '7.5%', textAlign: 'center'}} value={ThirdItemText} 
                   editable={ThirdItemActive}
+                  showSoftInputOnFocus={showThirdItemKeyboard}
                   textAlign='center'
                   color='black'
                   ref={ref_input3}
@@ -822,7 +959,7 @@ const PackingInventory = (props) => {
 
                       MSSQL.connect(config).then(result1 => {console.log('result1',result1)}).
                       then(exec=>{
-                        MSSQL.executeQuery(
+                        MSSQL.executeUpdate(
                            'SelectPackDetail @Id = ' + StationId 
                           ).then(result =>{
 
@@ -839,6 +976,7 @@ const PackingInventory = (props) => {
                                   setFirstItemActive(true)
                                   setCurrentStep(0)
                                   setLastBarcode('_')
+                                  setFirstItemText('')
                                   ref_input1.current.focus()
                               })
     
@@ -961,7 +1099,7 @@ const PackingInventory = (props) => {
 
    
 
-
+</ScrollView>
         </View>
     )
 

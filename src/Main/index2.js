@@ -25,8 +25,11 @@ const Main = (props) => {
       <View style={{width: wp('100%'), height: hp('100%'), backgroundColor: ColorPalet._smokey}}>   
         <View style={{width: wp('90%'), height: hp('51%'), margin: wp('5%'), backgroundColor: 'transparent'}}>
           <View style={{width: '100%', height: '50%', flexDirection: 'row'}}>
-          <TouchableOpacity style={{width: wp('43%'), height: wp('43%'), backgroundColor: '#f0f0f0', margin: wp('1%'), borderRadius: 10, elevation: 5}}
-                              onPress={()=>{}}>
+          <TouchableOpacity style={{width: wp('43%'), height: wp('43%')
+          , backgroundColor: '#f0f0f0', margin: wp('1%'), borderRadius: 10, elevation: 5,opacity:0.5}}
+                              onPress={()=>{}}
+                              disabled={true}
+                              >
               <View style={{width: '100%', height: '10%'}}></View>
               <View style={{width: '100%', height: '45%', justifyContent: 'center', alignItems: 'center'}}>
                 <Icon name = 'list' color='#2196F3' type="font-awesome" size= {70} />
